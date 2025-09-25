@@ -1,6 +1,5 @@
 <?php session_start();
 
-
 include_once 'database.php';
 if (!isset($_SESSION['user'])||$_SESSION['role']!='Teacher') {
   # code...
@@ -10,7 +9,6 @@ if (!isset($_SESSION['user'])||$_SESSION['role']!='Teacher') {
 <?php
 
 $pid =$fname =$lname=$nic=$email=$contact=$occupation = $classroom = $dob = $gender = $address = $parent=" ";
-
 
 if(isset($_GET['update'])){
   $update = "SELECT * FROM parent WHERE pid='".$_GET['update']."'";
@@ -39,10 +37,6 @@ if(isset($_GET['update'])){
 
 <!DOCTYPE html>
 
-<!--
-This is a starter template page. Use this page to start your new project from
-scratch. This page gets rid of all links and provides the needed markup only.
--->
 <html>
 <head>
   <meta charset="utf-8">
@@ -51,7 +45,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <!-- Tell the browser to be responsive to screen width -->
   <?php include_once 'header.php'; ?>
 
-
 </head>
 
 <body class="nav-md">
@@ -59,11 +52,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <div class="main_container">
       <div class="col-md-3 left_col">
         <?php include_once 'sidebar.php'; ?>
-
       </div>
-
       <?php include_once 'nav-menu.php'; ?>
-
       <!-- page content -->
       <div class="right_col" role="main">
         <div class="row">
@@ -96,12 +86,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
                     $contact = $_POST['contact'];
 
-
-
                     try {
-
-
-
 
                       $sql = "INSERT INTO parent (fname,lname,address,gender,job,contact,nic,email) VALUES ( '".$fname."', '".$lname."','".$address."','".$gender."','".$job."','".$contact."','".$nic."','".$email."')";
 
@@ -115,12 +100,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
                    }
 
-
-
-
-
-
-
                 # code...
                  }
 
@@ -130,7 +109,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <div class="alert alert-success alert-dismissible" style="display: none;" id="truemsg">
                   <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                   <h4><i class="icon fa fa-check"></i> Success!</h4>
-                  Update Student Successfully
+                  Update parent Successfully
                 </div>
 
                 <?php
@@ -149,10 +128,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
                   $contact = $_POST['contact'];
 
-
-
                   try {
-
 
                    $sql = "UPDATE parent SET fname='".$fname."',lname='".$lname."',address='".$address."',gender='".$gender."',job='".$job."',contact='".$contact."',email='".$email."',nic='".$nic."' WHERE pid =".$pid;
 
@@ -167,13 +143,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                  } catch (Exception $e) {
 
                  }
-
-
-
-
-
-
-                # code...
+                  # code...
                }
              }
 
@@ -211,7 +181,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
                 </div>
 
-
                 <div class="form-group">
                   <label for="exampleInputPassword1">Email</label>
                   <input name="email" type="email" class="form-control" id="exampleInputPassword1"  required value=<?php echo "'".$email."'"; ?>>
@@ -233,8 +202,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   <input name="job" type="text" class="form-control" id="exampleInputPassword1"  required value=<?php echo "'".$occupation."'"; ?>>
                 </div>
 
-
-
               </div>
               <!-- /.box-body -->
 
@@ -245,27 +212,17 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
           </div>
         </div>
-
-
-
-
       </div>
 
       <div class="col-md-9">
 
         <div class="x_panel">
           <div class="x_title">
-            <h2>All <small>Students</small></h2>
+            <h2>All <small>parents </small></h2>
             <ul class="nav navbar-right panel_toolbox">
               <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
               </li>
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <a class="dropdown-item" href="#">Settings 1</a>
-                  <a class="dropdown-item" href="#">Settings 2</a>
-                </div>
-              </li>
+            
               <li><a class="close-link"><i class="fa fa-close"></i></a>
               </li>
             </ul>
@@ -276,7 +233,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
               <div class="col-sm-12">
                 <div class="card-box table-responsive">
                   <p class="text-muted font-13 m-b-30">
-                    School Management System
+                    Student Management System
                   </p>
                   <table id="datatable-buttons" class="table table-striped table-bordered" style="width:100%">
                     <thead>
@@ -328,7 +285,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <!-- footer content -->
 <footer>
   <div class="pull-right">
-    Gentelella - Bootstrap Admin Template by <a href="https://colorlib.com">Colorlib</a>
+    Student Management System <a href="https://colorlib.com"></a>
   </div>
   <div class="clearfix"></div>
 </footer>

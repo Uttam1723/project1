@@ -1,6 +1,5 @@
 <?php session_start();
 
-
 include_once 'database.php';
 if (!isset($_SESSION['user'])||$_SESSION['role']!='Teacher') {
   # code...
@@ -10,7 +9,6 @@ if (!isset($_SESSION['user'])||$_SESSION['role']!='Teacher') {
 <?php
 
 $id =$fname =$lname = $classroom = $dob = $gender = $address = $parent=" ";
-
 
 if(isset($_GET['update'])){
   $update = "SELECT * FROM exam WHERE id='".$_GET['update']."'";
@@ -39,10 +37,6 @@ if(isset($_GET['update'])){
 
 <!DOCTYPE html>
 
-<!--
-This is a starter template page. Use this page to start your new project from
-scratch. This page gets rid of all links and provides the needed markup only.
--->
 <html>
 <head>
   <meta charset="utf-8">
@@ -50,7 +44,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <title> Dashboard</title><link rel="icon" href="../img/favicon2.png">
   <!-- Tell the browser to be responsive to screen width -->
   <?php include_once 'header.php'; ?>
-
 
 </head>
 
@@ -93,15 +86,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     $stime = $_POST['stime'];
                     $etime = $_POST['etime'];
 
-
-
-
-
-
                     try {
-
-
-
 
                       $sql = "INSERT INTO exam(subject,teacher,classroom,`date`,stime,etime) VALUES ('".$subject."', '".$teacher."', '".$classroom."','".$date."','".$stime."','".$etime."')";
 
@@ -115,10 +100,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
                    }
 
-
-
-
-
                 # code...
                  }
 
@@ -128,7 +109,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <div class="alert alert-success alert-dismissible" style="display: none;" id="truemsg">
                   <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                   <h4><i class="icon fa fa-check"></i> Success!</h4>
-                  Update Student Successfully
+                  Update Exam Successfully
                 </div>
 
                 <?php
@@ -147,10 +128,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
                   $contact = $_POST['contact'];
 
-
-
                   try {
-
 
                     $sql = "UPDATE exam SET fname='".$fname."',lname='".$lname."',bday='".$dob."',address='".$address."',gender='".$gender."',skill='".$skill."',contact='".$contact."',email='".$email."' WHERE id = '".$id."'";
 
@@ -166,22 +144,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
                  }
 
-
-
-
-
-
                 # code...
                }
              }
 
              ?>
 
-
              <form role="form" method="POST" >
               <div class="box-body">
-
-
 
                 <div class="form-group">
                   <label>Subject</label>
@@ -198,9 +168,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   ?>
                 </select>
               </div>
-
-
-
 
               <div class="form-group">
                 <label>Exam Hall (Class Room)</label>
@@ -248,8 +215,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
           </div>
 
-
-
           <div class="bootstrap-timepicker">
             <div class="form-group">
               <label>Start Time:</label>
@@ -265,8 +230,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
             </div>
             <!-- /.form group -->
           </div>
-
-
           <div class="bootstrap-timepicker">
             <div class="form-group">
               <label>End Time:</label>
@@ -283,16 +246,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <!-- /.form group -->
           </div>
 
-
-
-
-
-
-
-
-
-
-
         </div>
         <!-- /.box-body -->
 
@@ -304,26 +257,17 @@ scratch. This page gets rid of all links and provides the needed markup only.
     </div>
   </div>
 
-
-
-
 </div>
 
 <div class="col-md-9">
 
   <div class="x_panel">
     <div class="x_title">
-      <h2>All <small>Students</small></h2>
+      <h2>All <small>Exams</small></h2>
       <ul class="nav navbar-right panel_toolbox">
         <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
         </li>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <a class="dropdown-item" href="#">Settings 1</a>
-            <a class="dropdown-item" href="#">Settings 2</a>
-          </div>
-        </li>
+    
         <li><a class="close-link"><i class="fa fa-close"></i></a>
         </li>
       </ul>
@@ -334,7 +278,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <div class="col-sm-12">
           <div class="card-box table-responsive">
             <p class="text-muted font-13 m-b-30">
-              School Management System
+              Student Management System
             </p>
             <table id="datatable-buttons" class="table table-striped table-bordered" style="width:100%">
               <thead>
@@ -349,7 +293,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
                 </tr>
               </thead>
-
 
               <tbody>
                <?php
@@ -385,7 +328,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <!-- footer content -->
 <footer>
   <div class="pull-right">
-    Gentelella - Bootstrap Admin Template by <a href="https://colorlib.com">Colorlib</a>
+  Student Management System<a href="https://colorlib.com"></a>
   </div>
   <div class="clearfix"></div>
 </footer>

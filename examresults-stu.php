@@ -46,13 +46,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <ul class="nav navbar-right panel_toolbox">
                   <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                   </li>
-                  <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                      <a class="dropdown-item" href="#">Settings 1</a>
-                      <a class="dropdown-item" href="#">Settings 2</a>
-                    </div>
-                  </li>
                   <li><a class="close-link"><i class="fa fa-close"></i></a>
                   </li>
                 </ul>
@@ -63,7 +56,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   <div class="col-sm-12">
                     <div class="card-box table-responsive">
                       <p class="text-muted font-13 m-b-30">
-                        School Management System
+                        Student Management System
                       </p>
                       <table id="datatable-buttons" class="table table-striped table-bordered" style="width:100%">
                         <thead>

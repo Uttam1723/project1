@@ -17,10 +17,6 @@ if (!isset($_SESSION['user'])||$_SESSION['role']!='Teacher') {
 
 <!DOCTYPE html>
 
-<!--
-This is a starter template page. Use this page to start your new project from
-scratch. This page gets rid of all links and provides the needed markup only.
--->
 <html>
 <head>
   <meta charset="utf-8">
@@ -128,17 +124,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
  <div class="row">
  <div class="col-xs-4">
 
-   
-
          <div class="alert alert-success alert-dismissible" style="display: none;" id="truemsg">
                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                 <h4><i class="icon fa fa-check"></i> Success!</h4>
                 New Attendance Report Successfully added
               </div>
-
-
-
-
 
           <!-- general form elements -->
           <div class="box box-primary">
@@ -160,14 +150,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   <input name="sid" type="text" class="form-control" id="exampleInputPassword1" disabled="disabled" value=<?php echo "'".$_GET['date']."'"; ?>>
                 </div>
 
-
                   <div class="form-group">
                   <label for="exampleInputPassword1">Subject ID</label>
                   <input name="sid" type="text" class="form-control" id="exampleInputPassword1" disabled="disabled" value=<?php echo "'".$_GET['subject']."'"; ?>>
                 </div>
-
-
-               
 
                 <div class="form-group">
                   <label for="exampleInputPassword1">Start Time</label>
@@ -176,7 +162,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
               </div>
               <!-- /.box-body -->
 
-<div class="box-footer">
+            <div class="box-footer">
 
                   <?php
 
@@ -186,7 +172,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   if ($result->num_rows > 0) {
             echo ' <a  href="attendancelist.php?view='.$_GET['aid'].'&aid='.$_GET['aid'].'&date='.$_GET['date'].'&subject='.$_GET['subject'].'&stime='.$_GET['stime'].'"  class="btn btn-primary">View Attendance</a>';
               
-                                  }else{echo '<a href="attendancelist.php?mark='.$_GET['aid'].'&class='.$_GET['class'].'&aid='.$_GET['aid'].'&date='.$_GET['date'].'&subject='.$_GET['subject'].'&stime='.$_GET['stime'].'  "class="btn btn-primary">Mark Attendance</a>';}
+                }else{echo '<a href="attendancelist.php?mark='.$_GET['aid'].'&class='.$_GET['class'].'&aid='.$_GET['aid'].'&date='.$_GET['date'].'&subject='.$_GET['subject'].'&stime='.$_GET['stime'].'  "class="btn btn-primary">Mark Attendance</a>';}
 
                   ?> 
               </div>
@@ -217,12 +203,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   }
  
                 # code...
-                                            }
-
+                  }
               ?>
-
-
-
           </div></div>
 
           <div class="col-xs-8">
@@ -240,13 +222,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   <th>Student ID</th>
                   <th>Name</th>
                   <th>Attendance</th>
-                  
-                  
+                                    
                 </tr>
                 </thead>
                 <tbody>
-
-
                   <?php
 
                   $sql = "SELECT * from student where classroom='".$_GET['class']."'";
@@ -292,11 +271,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
 
           <?php }elseif (isset($_GET['view'])) { ?>
-
-
-
-
-                
+    
           <div class="box box-primary">
             <div class="box-header with-border">
               <h3 class="box-title">Students Attendance</h3>
@@ -337,7 +312,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
                   ?>
 
-
                 </tbody>
                 <tfoot>
                  
@@ -355,12 +329,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             
           </div>
           <!-- /.box -->
-        </div>
-
-      <!--------------------------
-        | Your Page Content Here |
-        -------------------------->
-   
+        </div> 
     </section>
 
     <!-- /.content -->
@@ -421,9 +390,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
     })
   })
 </script>
-
-
-
 
 <script>   $('.select2').select2()
   $('#datepicker').datepicker({

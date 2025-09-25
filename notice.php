@@ -44,10 +44,6 @@ if(isset($_GET['update'])){
 
 <!DOCTYPE html>
 
-<!--
-This is a starter template page. Use this page to start your new project from
-scratch. This page gets rid of all links and provides the needed markup only.
--->
 <html>
 <head>
   <meta charset="utf-8">
@@ -55,7 +51,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <title> Dashboard</title><link rel="icon" href="../img/favicon2.png">
   <!-- Tell the browser to be responsive to screen width -->
   <?php include_once 'header.php'; ?>
-
 
 </head>
 
@@ -91,22 +86,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     $notice = $_POST['notice'];
                     $odience = $_POST['odience'];
 
-
-              // $date = date_format(new DateTime($_POST['date']),'Y-m-d');
-                //echo $dob;
-               // $day = $_POST['day'];
-                 // $stime = $_POST['stime'];
-                 //  $grade = $_POST['grade'];
-
-
-
-
-
-
                     try {
-
-
-
 
                       $sql = "INSERT INTO notice(notice,odience,`date`) VALUES ('".$notice."', '".$odience."', now())";
 
@@ -119,10 +99,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
                    } catch (Exception $e) {
 
                    }
-
-
-
-
 
                 # code...
                  }
@@ -152,9 +128,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   $parent = $_POST['parent'];
 
 
-
-
-
                   try {
 
                     $sql = "UPDATE user set fname='".$fname."',lname='".$lname."',bday='".$dob."',address='".$address."',gender='".$gender."',parent=".$parent.",user='".$user."',email='".$email."' where sid='".$sid."'";
@@ -172,11 +145,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
                  }
 
-
-
-
-
-
                 # code...
                }
              }
@@ -192,8 +160,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   <textarea name="notice" class="form-control" id="exampleFormControlTextarea1" rows="10"></textarea>
                 </div>
 
-
-
                 <div class="form-group">
                   <label>Odience </label>
                   <select class="form-control select2 select2-hidden-accessible" style="width: 100%;" tabindex="-1" aria-hidden="true" name="odience"><option >Select Odience</option>
@@ -204,7 +170,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
                  </select>
                </div>
 
-
              </div>
              <!-- /.box-body -->
 
@@ -213,12 +178,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
             </div>
           </form>
 
-
         </div>
       </div>
-
-
-
 
     </div>
 
@@ -230,13 +191,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <ul class="nav navbar-right panel_toolbox">
             <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
             </li>
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="#">Settings 1</a>
-                <a class="dropdown-item" href="#">Settings 2</a>
-              </div>
-            </li>
             <li><a class="close-link"><i class="fa fa-close"></i></a>
             </li>
           </ul>
@@ -247,7 +201,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <div class="col-sm-12">
               <div class="card-box table-responsive">
                 <p class="text-muted font-13 m-b-30">
-                  School Management System
+                  Student Management System
                 </p>
                 <table id="datatable-buttons" class="table table-striped table-bordered" style="width:100%">
                   <thead>
@@ -298,7 +252,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <!-- footer content -->
 <footer>
   <div class="pull-right">
-    Gentelella - Bootstrap Admin Template by <a href="https://colorlib.com">Colorlib</a>
+    Student Management System <a href="https://colorlib.com"></a>
   </div>
   <div class="clearfix"></div>
 </footer>

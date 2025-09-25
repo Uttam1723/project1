@@ -37,11 +37,6 @@ if(isset($_GET['update'])){
 ?>
 
 <!DOCTYPE html>
-
-<!--
-This is a starter template page. Use this page to start your new project from
-scratch. This page gets rid of all links and provides the needed markup only.
--->
 <html>
 <head>
   <meta charset="utf-8">
@@ -49,7 +44,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <title> Dashboard</title><link rel="icon" href="../img/favicon2.png">
   <!-- Tell the browser to be responsive to screen width -->
   <?php include_once 'header.php'; ?>
-
 
 </head>
 
@@ -87,11 +81,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     $location = $_POST['location'];
                     $capacity = $_POST['capacity'];
 
-
                     try {
-
-
-
 
                       $sql = "INSERT INTO classroom(hno,title,location,capacity) VALUES ( '".$hno."', '".$title."','".$location."',".$capacity.")";
 
@@ -104,11 +94,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
                    } catch (Exception $e) {
 
                    }
-
-
-
-
-
 
                 # code...
                  }
@@ -137,10 +122,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
                   $parent = $_POST['parent'];
 
-
-
-
-
                   try {
 
                     $sql = "UPDATE classroom set fname='".$fname."',lname='".$lname."',bday='".$dob."',address='".$address."',gender='".$gender."',parent=".$parent.",classroom='".$classroom."',email='".$email."' where hno='".$hno."'";
@@ -158,49 +139,34 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
                  }
 
-
-
-
-
-
                 # code...
                }
              }
 
              ?>
 
-
              <form role="form" method="POST" >
               <div class="box-body">
 
-
-
                 <div class="form-group">
                   <label for="exampleInputPassword1">Class Room ID</label>
-                  <input name="hno" type="text" class="form-control" id="exampleInputPassword1" placeholder="Enter Class Room ID" required>
+                  <input name="hno" type="text" class="form-control" id="exampleInputPassword1"  required>
                 </div>
 
                 <div class="form-group">
                   <label for="exampleInputPassword1">Class Room Title</label>
-                  <input name="title" type="text" class="form-control" id="exampleInputPassword1" placeholder="Enter Class Room Title" required>
+                  <input name="title" type="text" class="form-control" id="exampleInputPassword1"  required>
                 </div>
 
 
                 <div class="form-group">
                   <label for="exampleInputPassword1">Location</label>
-                  <input name="location" type="text" class="form-control" id="exampleInputPassword1" placeholder="Enter Class Room Location" required>
+                  <input name="location" type="text" class="form-control" id="exampleInputPassword1"  required>
                 </div>
                 <div class="form-group">
                   <label for="exampleInputPassword1">Capacity</label>
-                  <input name="capacity" type="number" class="form-control" id="exampleInputPassword1" placeholder="Enter Class Room Capacity" required>
+                  <input name="capacity" type="number" class="form-control" id="exampleInputPassword1" required>
                 </div>
-
-
-
-
-
-
-
 
               </div>
               <!-- /.box-body -->
@@ -213,9 +179,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
           </div>
         </div>
 
-
-
-
       </div>
 
       <div class="col-md-9">
@@ -226,12 +189,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <ul class="nav navbar-right panel_toolbox">
               <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
               </li>
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <a class="dropdown-item" href="#">Settings 1</a>
-                  <a class="dropdown-item" href="#">Settings 2</a>
-                </div>
+             
               </li>
               <li><a class="close-link"><i class="fa fa-close"></i></a>
               </li>
@@ -243,7 +201,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
               <div class="col-sm-12">
                 <div class="card-box table-responsive">
                   <p class="text-muted font-13 m-b-30">
-                    School Management System
+                    Student Management System
                   </p>
                   <table id="datatable-buttons" class="table table-striped table-bordered" style="width:100%">
                     <thead>
@@ -254,8 +212,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
                        <th>Capacity</th>
                      </tr>
                    </thead>
-
-
                    <tbody>
                      <?php
 
@@ -291,7 +247,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <!-- footer content -->
 <footer>
   <div class="pull-right">
-    Gentelella - Bootstrap Admin Template by <a href="https://colorlib.com">Colorlib</a>
+  Student Management System <a href="https://colorlib.com"></a>
   </div>
   <div class="clearfix"></div>
 </footer>

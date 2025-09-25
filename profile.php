@@ -9,7 +9,6 @@ if (!isset($_SESSION['user'])) {
 ?>
 <?php
 
-
 if($_SESSION['role']=='Student'){
   $sid = $_SESSION['uid'];
 
@@ -35,8 +34,6 @@ if($_SESSION['role']=='Student'){
       $sql = "UPDATE student set fname='".$fname."',lname='".$lname."',bday='".$dob."',address='".$address."',gender='".$gender."',parent=".$parent.",classroom='".$classroom."' where sid='".$sid."'";
 
 
-                   // $sql = "INSERT INTO student (sid,fname,lname,bday,address,gender,parent,classroom) VALUES ('".$sid."', '".$fname."', '".$lname."','".$dob."','".$address."','".$gender."','".$parent."','".$classroom."')";
-
       if ($conn->query($sql) === TRUE) {
        echo "<script type='text/javascript'> var x = document.getElementById('truemsg');
        x.style.display='block';</script>";
@@ -46,13 +43,7 @@ if($_SESSION['role']=='Student'){
    } catch (Exception $e) {
 
    }
-
-
-
-
-
-
-                # code...
+             # code...
  } else {
   $update = "SELECT * FROM student WHERE sid='".$sid."'";
   $result = $conn->query($update);
@@ -84,14 +75,10 @@ if($_SESSION['role']=='Student'){
     $nic = $_POST['nic'];
     $fname = $_POST['fname'];
     $lname = $_POST['lname'];
-
-               // $dob = date_format(new DateTime($_POST['dob']),'Y-m-d');
-                //echo $dob;
     $gender = $_POST['gender'];
     $address = $_POST['address'];
     $email = $_POST['email'];
-    $job = $_POST['job'];
-
+    $occupation =$_POST['job'];
     $contact = $_POST['contact'];
 
     $_SESSION['user'] = $fname.' '.$lname;
@@ -99,7 +86,7 @@ if($_SESSION['role']=='Student'){
     try {
 
 
-     $sql = "UPDATE parent SET fname='".$fname."',lname='".$lname."',address='".$address."',gender='".$gender."',job='".$job."',contact='".$contact."',nic='".$nic."' WHERE pid =".$pid;
+     $sql = "UPDATE parent SET fname='".$fname."',lname='".$lname."',email='".$email."',address='".$address."',gender='".$gender."',job='".$occupation."',contact='".$contact."',nic='".$nic."' WHERE pid =".$pid;
 
                    // $sql = "INSERT INTO Parent (fname,lname,address,gender,job,contact,nic,email) VALUES ( '".$fname."', '".$lname."','".$address."','".$gender."','".$job."','".$contact."','".$nic."','".$email."')";
 
@@ -112,13 +99,7 @@ if($_SESSION['role']=='Student'){
    } catch (Exception $e) {
 
    }
-
-
-
-
-
-
-                # code...
+            # code...
  } else {
   $update = "SELECT * FROM parent WHERE pid='".$pid."'";
   $result = $conn->query($update);
@@ -132,8 +113,7 @@ if($_SESSION['role']=='Student'){
       $lname = $row['lname'];
       $contact = $row['contact'];
       $occupation = $row['job'];
-      $dob = date_format(new DateTime($row['bday']),'Y-m-d');
-                //echo $dob;
+      //$dob = date_format(new DateTime($row['dob']),'Y-m-d');
       $gender = $row['gender'];
       $address = $row['address'];
       $email=$row['email'];
@@ -160,7 +140,7 @@ if($_SESSION['role']=='Student'){
 
     $contact = $_POST['contact'];
     try {
-     $sql = "UPDATE teacher SET fname='".$fname."',lname='".$lname."',bday='".$dob."',address='".$address."',gender='".$gender."',skill='".$skill."',contact='".$contact."' WHERE tid = '".$tid."'";
+     $sql = "UPDATE teacher SET fname='".$fname."',lname='".$lname."',email='".$email."',bday='".$dob."',address='".$address."',gender='".$gender."',skill='".$skill."',contact='".$contact."' WHERE tid = '".$tid."'";
 
                    // $sql = "INSERT INTO Teacher (tid,fname,lname,bday,address,gender,skill,contact,email) VALUES ('".$tid."', '".$fname."', '".$lname."','".$dob."','".$address."','".$gender."','".$skill."','".$contact."','".$email."')";
 
@@ -173,11 +153,6 @@ if($_SESSION['role']=='Student'){
    } catch (Exception $e) {
 
    }
-
-
-
-
-
 
                 # code...
  } else {
@@ -205,16 +180,10 @@ if($_SESSION['role']=='Student'){
 }
 }
 
-
-
 ?>
 
 <!DOCTYPE html>
 
-<!--
-This is a starter template page. Use this page to start your new project from
-scratch. This page gets rid of all links and provides the needed markup only.
--->
 <html>
 <head>
   <meta charset="utf-8">
@@ -254,23 +223,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
                 <form method="POST">
 
-
-
-
-
-
-
-
-
-
-
-
-
-
                   <div class="container rounded bg-white mt-5 mb-5">
                     <div class="row">
                       <div class="col-md-3 border-right">
-                        <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img class="rounded-circle mt-5" width="150px" src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg"><span class="font-weight-bold">Edogaru</span><span class="text-black-50">edogaru@mail.com.my</span><span> </span></div>
+                        <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img class="rounded-circle mt-5" width="150px" src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg"><span class="font-weight-bold"><?php echo $_SESSION['user']; ?></span><span class="text-black-50"></span><span>  </span></div>
                       </div>
                       <div class="col-md-9 border-right">
                         <div class="p-3 py-5">
@@ -409,7 +365,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         <div class="col-md-12">
                           <div class="form-group">
                             <label for="exampleInputPassword1">Email</label>
-                            <input name="email" type="email" class="form-control" id="exampleInputPassword1" disabled required value=<?php echo "'".$email."'"; ?>>
+                            <input name="email" type="email" class="form-control" id="exampleInputPassword1" required value=<?php echo "'".$email."'"; ?>>
                           </div>
                         </div>
 
@@ -473,7 +429,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         <div class="col-md-12">
                           <div class="form-group">
                             <label for="exampleInputPassword1">Email</label>
-                            <input name="email" type="email" class="form-control" id="exampleInputPassword1" disabled=""> required value=<?php echo "'".$email."'"; ?>>
+                            <input name="email" type="email" class="form-control" id="exampleInputPassword1"  required value=<?php echo "'".$email."'"; ?>>
                           </div>
                         </div>
 
@@ -529,7 +485,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <!-- footer content -->
 <footer>
   <div class="pull-right">
-    Gentelella - Bootstrap Admin Template by <a href="https://colorlib.com">Colorlib</a>
+    Student Management System <a href="https://colorlib.com"></a>
   </div>
   <div class="clearfix"></div>
 </footer>
