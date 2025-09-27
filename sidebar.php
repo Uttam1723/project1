@@ -1,4 +1,5 @@
-        <div class="left_col scroll-view">
+
+       <div class="left_col scroll-view">
           <div class="navbar nav_title" style="border: 0;">
             <a href="index.php" class="site_title"><i class="fa fa-paw"></i> <span>Student Management System</span></a>
           </div>
@@ -29,33 +30,36 @@
                   <ul class="nav child_menu">
 
                    <?php if($_SESSION['role']=='Teacher'){ ?>
-                    <li id="new"><a href="./student.php"><i class="fa fa-users"></i> <span>Student</span> </a></li>
-                    <li id="teacher"><a href="./teacher.php"><i class="fa  fa-black-tie"></i> <span>Teacher</span> </a></li>
-                    <li id="parent"><a href="./parent.php"><i class="fa  fa-female"></i> <span>Parents</span> </a></li>
-                    <li id="subject"><a href="./subject.php"><i class="fa fa-book"></i> <span>Subject</span> </a></li>
-                    <li id="class"><a href="./class.php"><i class="fa fa-bank"></i> <span>Class Room</span> </a></li>
-                    <li id="schedule"><a href="./schedule.php"><i class="fa fa-calendar-o"></i> <span>Schedule</span> </a></li>
-                    <li id="attendance"><a href="./attendance.php"><i class="fa  fa-check"></i> <span>Attendance</span> </a></li>
-                    <li id="exam"><a href="./exam.php"><i class="fa fa-line-chart"></i> <span>Exam</span> </a></li>
-                    <li id="examresults"><a href="./examresults.php"><i class="fa fa-graduation-cap"></i> <span>Exam Results</span> </a></li>
-                    <li id="user"><a href="./user.php"><i class="fa fa-user-plus"></i> <span>Users</span> </a></li>
-                    <li id="notice"><a href="./notice.php"><i class="fa fa-envelope-o"></i> <span>Notice</span> </a></li>
+                <li id="new"><a href="./student.php"><i class="fa fa-users"></i> <span>Student</span> </a></li>
+                <li id="parent"><a href="./parent.php"><i class="fa  fa-female"></i> <span>Parents</span> </a></li>
+                <li id="subject"><a href="./subject.php"><i class="fa fa-book"></i> <span>Subject</span> </a></li>
+                <li id="class"><a href="./class.php"><i class="fa fa-bank"></i> <span>Class Room</span> </a></li>
+                <li id="attendance"><a href="./attendance1.php"><i class="fa  fa-check"></i> <span>Attendance</span> </a></li>
+                <li id="exam"><a href="./exam.php"><i class="fa fa-line-chart"></i> <span>Exam</span> </a></li>
+                <li id="examresults"><a href="./examresults.php"><i class="fa fa-graduation-cap"></i> <span>Exam Results</span> </a></li>
+                <li id="notice"><a href="./notice.php"><i class="fa fa-envelope-o"></i> <span>Notice</span> </a></li>
+               
+                <li id="timetable"><a href="./timetable.php"><i class="fa fa-calendar"></i> <span>Timetable</span></a></li>
 
-                  <?php }elseif ($_SESSION['role']=='Parent') {
-                    ?>
-                    <li id="student-par"><a href="./student-par.php"><i class="fa fa-users"></i> <span>Student</span> </a></li>
-                    <li id="notice-role"><a href="./notice-role.php"><i class="fa fa-envelope-o"></i> <span>Notice</span> </a></li>
-                    <li id="examresults-par"><a href="./examresults-par.php"><i class="fa fa-graduation-cap"></i> <span>Exam Results</span> </a></li>
+            <?php } elseif ($_SESSION['role']=='Parent') { ?>
+                <li id="student-par"><a href="./student-par.php"><i class="fa fa-users"></i> <span>Student</span> </a></li>
+                <li id="notice-role"><a href="./notice-role.php"><i class="fa fa-envelope-o"></i> <span>Notice</span> </a></li>
+                <li id="examresults-par"><a href="./examresults-par.php"><i class="fa fa-graduation-cap"></i> <span>Exam Results</span> </a></li>
+                <li id="attendance-par"><a href="./parent-attendance.php"><i class="fa fa-check"></i> <span>Child Attendance</span></a></li>
+                
 
-                    <?php
+            <?php } elseif ($_SESSION['role']=='Student') { ?>
+                <li id="notice-role"><a href="./notice-role.php"><i class="fa fa-envelope-o"></i> <span>Notice</span> </a></li>
+                <li id="examresults-stu"><a href="./examresults-stu.php"><i class="fa fa-graduation-cap"></i> <span>Exam Results</span> </a></li>
+                <li id="attendance-stu"><a href="./student-attendance.php"><i class="fa fa-check"></i> <span>My Attendance</span></a></li>
+                <li id="timetable-stu"><a href="./student-timetable.php"><i class="fa fa-calendar"></i> <span>My Timetable</span></a></li>
+                
 
-                  }elseif ($_SESSION['role']=='Student') { ?>
-                    <li id="notice-role"><a href="./notice-role.php"><i class="fa fa-envelope-o"></i> <span>Notice</span> </a></li>
-                    <li id="examresults-stu"><a href="./examresults-stu.php"><i class="fa fa-graduation-cap"></i> <span>Exam Results</span> </a></li>
-                    <li id="schedule-stu"><a href="./schedule-stu.php"><i class="fa fa-calendar-o"></i> <span>Schedule</span> </a></li>
-                    <?php
+            <?php } elseif ($_SESSION['role']=='Admin') { ?>
+                <li id="dashboard-admin"><a href="./teacher.php"><i class="fa fa-dashboard"></i> <span>Add teacher</span></a></li>
+                <li id="user"><a href="./user.php"><i class="fa fa-user-plus"></i> <span>Users</span> </a></li>
+            <?php } ?>
 
-                  }?>
 
                 </ul>
               </li>

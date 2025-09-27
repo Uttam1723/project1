@@ -9,28 +9,42 @@ if (isset($_POST['submit'])) {
   $result = $conn->query($sql);
   if ($result->num_rows > 0) {    
 // output data of each row
+
+
     while($row = $result->fetch_assoc()) {
       $_SESSION['role'] = $row['role'];
       $_SESSION['user'] = $row['fname']." ".$row['lname'];
     }
+
+
+
     $role_table = strtolower($_SESSION['role']);
     $sql2 = "SELECT * FROM `".$role_table."` WHERE `email` ='".$email."'";
     $result2 = $conn->query($sql2);
-    if ($result2->num_rows > 0) {
-      while($row2 = $result2->fetch_assoc()) {
-        $_SESSION['user'] = $row2['fname']." ".$row2['lname'];
-//$_SESSION['uid'] = $row2['pid'];
-        if($_SESSION['role']=='Student'){
-          $_SESSION['uid']=$row2['sid'];
-        }else if($_SESSION['role']=='Parent'){
-          $_SESSION['uid']=$row2['pid'];
-        }else if($_SESSION['role']=='Teacher'){
-          $_SESSION['uid']=$row2['tid'];
-        }
-      }
+
+    
+   if ($result2->num_rows > 0) {
+  while($row2 = $result2->fetch_assoc()) {
+    $_SESSION['user'] = $row2['fname']." ".$row2['lname'];
+    if($_SESSION['role']=='Student'){
+      $_SESSION['uid']=$row2['sid'];
+    }else if($_SESSION['role']=='Parent'){
+      $_SESSION['uid']=$row2['pid'];
+    }else if($_SESSION['role']=='Teacher'){
+      $_SESSION['uid']=$row2['tid'];
+    }else if($_SESSION['role']=='Admin'){
+      $_SESSION['uid']=$row2['aid']; // admin id from admin table
     }
-    header("Location:./");
-  }else{
+  }
+}
+if ($_SESSION['role']=='Admin') {
+    header("Location: ./"); // your admin panel page
+    exit;
+} else {
+    header("Location: ./");
+    exit;
+}
+}else{
     $message = "<p style='width:100%;text-align;center'>Incorrect username or password</p>";
   }
 }

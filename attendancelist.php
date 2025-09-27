@@ -2,9 +2,12 @@
 
 
 include_once 'database.php';
-if (!isset($_SESSION['user'])||$_SESSION['role']!='Teacher') {
-  # code...
-  header('Location:./logout.php');
+if (
+    !isset($_SESSION['user']) || 
+    !in_array($_SESSION['role'], ['Teacher', 'Admin','Student'])
+) {
+    header('Location: ./logout.php');
+    exit;
 }
 ?>
 <?php
@@ -131,35 +134,53 @@ if (!isset($_SESSION['user'])||$_SESSION['role']!='Teacher') {
               </div>
 
           <!-- general form elements -->
-          <div class="box box-primary">
+          <div class="row">
+    <div class="col-md-12"> 
+        <div class="box box-primary">
+            
             <div class="box-header with-border">
-              <h3 class="box-title">Session Details</h3>
+                <h3 class="box-title">Session Details</h3>
             </div>
-            <!-- /.box-header -->
-            <!-- form start -->
-            <form role="form" method="POST" >
-              <div class="box-body">
+            
+            <form role="form" method="POST">
 
-                  <div class="form-group">
-                  <label for="exampleInputPassword1">Attendance ID</label>
-                  <input name="sid" type="text" class="form-control" id="exampleInputPassword1" disabled="disabled" value=<?php echo "'".$_GET['aid']."'"; ?>>
+                <div class="box-body"> 
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="aid_input">Attendance ID</label>
+                                <input name="aid_display" type="text" class="form-control" id="aid_input" disabled="disabled" value=<?php echo "'".$_GET['aid']."'"; ?>>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="date_input">Date</label>
+                                <input name="date_display" type="text" class="form-control" id="date_input" disabled="disabled" value=<?php echo "'".$_GET['date']."'"; ?>>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="subject_input">Subject ID</label>
+                                <input name="subject_display" type="text" class="form-control" id="subject_input" disabled="disabled" value=<?php echo "'".$_GET['subject']."'"; ?>>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="stime_input">Start Time</label>
+                                <input name="stime_display" type="text" class="form-control" id="stime_input" disabled="disabled" value=<?php echo "'".$_GET['stime']."'"; ?>>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
-
-                  <div class="form-group">
-                  <label for="exampleInputPassword1">Date</label>
-                  <input name="sid" type="text" class="form-control" id="exampleInputPassword1" disabled="disabled" value=<?php echo "'".$_GET['date']."'"; ?>>
-                </div>
-
-                  <div class="form-group">
-                  <label for="exampleInputPassword1">Subject ID</label>
-                  <input name="sid" type="text" class="form-control" id="exampleInputPassword1" disabled="disabled" value=<?php echo "'".$_GET['subject']."'"; ?>>
-                </div>
-
-                <div class="form-group">
-                  <label for="exampleInputPassword1">Start Time</label>
-                  <input name="sid" type="text" class="form-control" id="exampleInputPassword1" disabled="disabled" value=<?php echo "'".$_GET['stime']."'"; ?>>
-                </div>   
-              </div>
+                </form>
+        </div>
+    </div>
+</div>
               <!-- /.box-body -->
 
             <div class="box-footer">
@@ -206,6 +227,7 @@ if (!isset($_SESSION['user'])||$_SESSION['role']!='Teacher') {
                   }
               ?>
           </div></div>
+          <br>
 
           <div class="col-xs-8">
             <?php if(isset($_GET['mark'])){ ?>

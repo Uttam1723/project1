@@ -1,9 +1,12 @@
 <?php session_start();
 
 include_once 'database.php';
-if (!isset($_SESSION['user'])||$_SESSION['role']!='Teacher') {
-  # code...
-  header('Location:./logout.php');
+if (
+    !isset($_SESSION['user']) || 
+    !in_array($_SESSION['role'], ['Teacher', 'Admin'])
+) {
+    header('Location: ./logout.php');
+    exit;
 }
 ?>
 <?php
