@@ -9,11 +9,6 @@ if (!isset($_SESSION['user'])||$_SESSION['role']!='Student') {
 ?>
 
 <!DOCTYPE html>
-
-<!--
-This is a starter template page. Use this page to start your new project from
-scratch. This page gets rid of all links and provides the needed markup only.
--->
 <html>
 <head>
   <meta charset="utf-8">
@@ -104,7 +99,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <!-- footer content -->
 <footer>
   <div class="pull-right">
-    Gentelella - Bootstrap Admin Template by <a href="https://colorlib.com">Colorlib</a>
+  Student Management System <a href="https://colorlib.com"></a>
   </div>
   <div class="clearfix"></div>
 </footer>

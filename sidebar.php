@@ -42,7 +42,7 @@
                 <li id="timetable"><a href="./timetable.php"><i class="fa fa-calendar"></i> <span>Timetable</span></a></li>
 
             <?php } elseif ($_SESSION['role']=='Parent') { ?>
-                <li id="student-par"><a href="./student-par.php"><i class="fa fa-users"></i> <span>Student</span> </a></li>
+                <li id="student-par"><a href="./student-par.php"><i class="fa fa-users"></i> <span>My child</span> </a></li>
                 <li id="notice-role"><a href="./notice-role.php"><i class="fa fa-envelope-o"></i> <span>Notice</span> </a></li>
                 <li id="examresults-par"><a href="./examresults-par.php"><i class="fa fa-graduation-cap"></i> <span>Exam Results</span> </a></li>
                 <li id="attendance-par"><a href="./parent-attendance.php"><i class="fa fa-check"></i> <span>Child Attendance</span></a></li>

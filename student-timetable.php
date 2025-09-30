@@ -99,7 +99,7 @@ if ($class_result->num_rows > 0) {
         FROM timetable t
         JOIN subject s ON t.subject_id = s.sid
         WHERE t.class_id = ?
-        ORDER BY FIELD(t.day, 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'), t.start_time";
+        ORDER BY t.start_time";
  $stmt = $conn->prepare($sql);
  $stmt->bind_param("s", $class_id);
  $stmt->execute();
@@ -119,7 +119,7 @@ if ($result->num_rows > 0) {
  $current_time = date('H:i');
 
 // Function to check if a time slot is current
-function isCurrentTimeSlot($start, $end, $current_day, $today) {
+function isCurrentTimeSlot($start, $end, $current_day, $today, $current_time) {
     if ($current_day != $today) {
         return false;
     }
@@ -132,7 +132,7 @@ function isCurrentTimeSlot($start, $end, $current_day, $today) {
 }
 
 // Function to check if a time slot is upcoming
-function isUpcomingTimeSlot($start, $current_day, $today) {
+function isUpcomingTimeSlot($start, $current_day, $today, $current_time) {
     if ($current_day != $today) {
         return false;
     }
@@ -148,7 +148,7 @@ function isUpcomingTimeSlot($start, $current_day, $today) {
 <html>
 <head>
   <meta charset="utf-8">
-  <title>My Timetable</title>
+  <title>My Schedule</title>
   <?php include_once 'header.php'; ?>
   <style>
     .student-info-card {
@@ -215,106 +215,60 @@ function isUpcomingTimeSlot($start, $current_day, $today) {
       font-size: 22px;
       color: #333;
     }
-    .print-btn {
-      background: #6a11cb;
-      color: white;
-      border: none;
-      padding: 8px 15px;
-      border-radius: 5px;
-      cursor: pointer;
+    /* Styles for daily schedule */
+    .daily-schedule-list {
+        list-style: none;
+        padding: 0;
     }
-    .print-btn:hover {
-      background: #5a0dbb;
+    .daily-schedule-item {
+        background: #f9f9f9;
+        border-left: 5px solid #6a11cb;
+        padding: 15px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: all 0.2s ease-in-out;
     }
-    .timetable-grid {
-      display: grid;
-      grid-template-columns: 100px repeat(5, 1fr);
-      gap: 1px;
-      background-color: #ddd;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-      overflow: hidden;
-      margin-bottom: 20px;
+    .daily-schedule-item:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 10px rgba(0,0,0,0.08);
     }
-    .timetable-header-cell {
-      background-color: #f5f5f5;
-      padding: 15px 10px;
-      text-align: center;
-      font-weight: bold;
+    .daily-schedule-item.current {
+        background: #fff3e0;
+        border-left-color: #ff9800;
     }
-    .timetable-time-cell {
-      background-color: #f5f5f5;
-      padding: 15px 10px;
-      text-align: center;
-      font-weight: bold;
-      font-size: 14px;
+    .daily-schedule-item.upcoming {
+        background: #e3f2fd;
+        border-left-color: #2196f3;
     }
-    .timetable-cell {
-      background-color: white;
-      padding: 15px 10px;
-      min-height: 80px;
-      position: relative;
+    .daily-schedule-time {
+        font-weight: bold;
+        color: #555;
+        font-size: 14px;
     }
-    .time-slot {
-      font-size: 12px;
-      color: #666;
+    .daily-schedule-subject {
+        font-size: 18px;
+        font-weight: 500;
     }
-    .subject-title {
-      font-weight: bold;
-      margin-bottom: 5px;
-      font-size: 16px;
+    .daily-schedule-badge {
+        font-size: 12px;
+        padding: 4px 8px;
+        border-radius: 12px;
+        color: white;
+        font-weight: bold;
     }
-    .time-range {
-      font-size: 12px;
-      color: #666;
+    .daily-schedule-badge.now {
+        background: #ff9800;
     }
-    .today-highlight {
-      background-color: #e8f5e9;
-    }
-    .today-header {
-      background-color: #c8e6c9;
-    }
-    .current-class {
-      background-color: #fff3e0;
-      border-left: 4px solid #ff9800;
-    }
-    .upcoming-class {
-      background-color: #e3f2fd;
-      border-left: 4px solid #2196f3;
-    }
-    .current-badge {
-      position: absolute;
-      top: 5px;
-      right: 5px;
-      background: #ff9800;
-      color: white;
-      font-size: 10px;
-      padding: 2px 6px;
-      border-radius: 10px;
-    }
-    .upcoming-badge {
-      position: absolute;
-      top: 5px;
-      right: 5px;
-      background: #2196f3;
-      color: white;
-      font-size: 10px;
-      padding: 2px 6px;
-      border-radius: 10px;
+    .daily-schedule-badge.next {
+        background: #2196f3;
     }
     .no-classes {
       text-align: center;
       padding: 30px;
       color: #666;
-    }
-    @media print {
-      .no-print {
-        display: none;
-      }
-      .timetable-container {
-        box-shadow: none;
-        border: 1px solid #ddd;
-      }
     }
   </style>
 </head>
@@ -334,7 +288,7 @@ function isUpcomingTimeSlot($start, $current_day, $today) {
           <div class="col-md-12">
             <!-- Student Information Card -->
             <div class="student-info-card">
-              <h3>My Timetable</h3>
+              <h3>My Schedule for Today</h3>
               <div class="student-details">
                 <div class="detail-item">
                   <div class="detail-icon">
@@ -377,86 +331,51 @@ function isUpcomingTimeSlot($start, $current_day, $today) {
                 </div>
               </div>
             </div>
-            
-            <!-- Timetable Container -->
+
+            <!-- Today's Schedule Section -->
             <div class="timetable-container">
-              <div class="timetable-header">
-                <h3 class="timetable-title">Weekly Timetable</h3>
-                <button class="print-btn no-print" onclick="window.print()">
-                  <i class="fa fa-print"></i> Print
-                </button>
-              </div>
-              
-              <?php if (empty($timetableData)): ?>
-                <div class="no-classes">
-                  <i class="fa fa-calendar-times fa-3x" style="color: #ccc; margin-bottom: 15px;"></i>
-                  <h4>No timetable entries found for your class.</h4>
-                  <p>Please contact your administrator if this is an error.</p>
+                <div class="timetable-header">
+                    <h3 class="timetable-title">Today's Classes</h3>
                 </div>
-              <?php else: ?>
-                <div class="timetable-grid">
-                  <div class="timetable-header-cell">Time / Day</div>
-                  <div class="timetable-header-cell <?php echo ($today == 'Monday') ? 'today-header' : ''; ?>">Monday</div>
-                  <div class="timetable-header-cell <?php echo ($today == 'Tuesday') ? 'today-header' : ''; ?>">Tuesday</div>
-                  <div class="timetable-header-cell <?php echo ($today == 'Wednesday') ? 'today-header' : ''; ?>">Wednesday</div>
-                  <div class="timetable-header-cell <?php echo ($today == 'Thursday') ? 'today-header' : ''; ?>">Thursday</div>
-                  <div class="timetable-header-cell <?php echo ($today == 'Friday') ? 'today-header' : ''; ?>">Friday</div>
-                  
-                  <?php
-                  // Get unique time slots
-                  $timeSlots = [];
-                  foreach ($timetableData as $entry) {
-                    $timeSlot = $entry['start_time'] . ' - ' . $entry['end_time'];
-                    if (!in_array($timeSlot, $timeSlots)) {
-                      $timeSlots[] = $timeSlot;
-                    }
-                  }
-                  sort($timeSlots);
-                  
-                  foreach ($timeSlots as $timeSlot) {
-                    list($start, $end) = explode(' - ', $timeSlot);
-                    echo "<div class='timetable-time-cell time-slot'>$start<br>$end</div>";
-                    
-                    foreach (['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'] as $day) {
-                      // Determine cell class based on day and time
-                      $cellClass = 'timetable-cell';
-                      if ($day == $today) {
-                          $cellClass .= ' today-highlight';
-                      }
-                      
-                      echo "<div class='$cellClass'>";
-                      
-                      $found = false;
-                      foreach ($timetableData as $entry) {
-                        if ($entry['day'] == $day && $entry['start_time'] == $start && $entry['end_time'] == $end) {
-                          // Check if this is the current class
-                          if (isCurrentTimeSlot($start, $end, $day, $today)) {
-                              $cellClass .= ' current-class';
-                              echo "<div class='current-badge'>NOW</div>";
-                          }
-                          // Check if this is an upcoming class
-                          else if (isUpcomingTimeSlot($start, $day, $today)) {
-                              $cellClass .= ' upcoming-class';
-                              echo "<div class='upcoming-badge'>NEXT</div>";
-                          }
-                          
-                          echo "<div class='subject-title'>" . htmlspecialchars($entry['subject_title']) . "</div>";
-                          echo "<div class='time-range'>" . $entry['start_time'] . " - " . $entry['end_time'] . "</div>";
-                          $found = true;
-                          break;
-                        }
-                      }
-                      
-                      if (!$found) {
-                        echo "&nbsp;";
-                      }
-                      
-                      echo "</div>";
-                    }
-                  }
-                  ?>
-                </div>
-              <?php endif; ?>
+                <?php
+                // Filter for today's classes
+                $todayClasses = array_filter($timetableData, function($entry) use ($today) {
+                    return $entry['day'] === $today;
+                });
+
+                if (!empty($todayClasses)): ?>
+                    <ul class="daily-schedule-list">
+                        <?php foreach ($todayClasses as $entry): 
+                            // Determine class status
+                            $isCurrent = isCurrentTimeSlot($entry['start_time'], $entry['end_time'], $entry['day'], $today, $current_time);
+                            $isUpcoming = isUpcomingTimeSlot($entry['start_time'], $entry['day'], $today, $current_time);
+                            $itemClass = 'daily-schedule-item';
+                            
+                            if ($isCurrent) {
+                                $itemClass .= ' current';
+                            } elseif ($isUpcoming) {
+                                $itemClass .= ' upcoming';
+                            }
+                        ?>
+                            <li class="<?php echo $itemClass; ?>">
+                                <div>
+                                    <div class="daily-schedule-subject"><?php echo htmlspecialchars($entry['subject_title']); ?></div>
+                                    <div class="daily-schedule-time"><?php echo date('h:i A', strtotime($entry['start_time'])) . ' - ' . date('h:i A', strtotime($entry['end_time'])); ?></div>
+                                </div>
+                                <?php if ($isCurrent): ?>
+                                    <span class="daily-schedule-badge now">NOW</span>
+                                <?php elseif ($isUpcoming): ?>
+                                    <span class="daily-schedule-badge next">NEXT</span>
+                                <?php endif; ?>
+                            </li>
+                        <?php endforeach; ?>
+                    </ul>
+                <?php else: ?>
+                    <div class="no-classes">
+                        <i class="fa fa-calendar-times fa-3x" style="color: #ccc; margin-bottom: 15px;"></i>
+                        <p>You have no classes scheduled for today.</p>
+                    </div>
+                <?php endif; ?>
             </div>
           </div>
         </div>
