@@ -1,10 +1,30 @@
 <?php session_start();
 include_once 'database.php';
-if (!isset($_SESSION['user'])||$_SESSION['role']!='Teacher') {
+
+// Check if user is a teacher or admin
+if (!isset($_SESSION['user']) || ($_SESSION['role'] != 'Teacher' && $_SESSION['role'] != 'Admin')) {
   header('Location:./logout.php');
 }
 
-$sid =$fname =$lname =$email= $classroom = $dob = $gender = $address = $parent=" ";
+// Handle delete student
+if (isset($_GET['delete'])) {
+  $student_id = $_GET['delete'];
+  
+  // Delete the student
+  $sql = "DELETE FROM student WHERE sid = '$student_id'";
+  
+  if ($conn->query($sql) === TRUE) {
+    // Redirect back to the student page with a success message
+    header("Location: student.php?deleted=1");
+    exit;
+  } else {
+    // Redirect back with an error message
+    header("Location: student.php?error=1");
+    exit;
+  }
+}
+
+ $sid =$fname =$lname =$email= $classroom = $dob = $gender = $address = $parent=" ";
 
 if(isset($_GET['update'])){
   $update = "SELECT * FROM student WHERE sid='".$_GET['update']."'";
@@ -102,15 +122,203 @@ if (isset($_POST['submit'])) {
     </script>";
   }
 }
+
+// Handle class filter
+ $classFilter = '';
+if (isset($_GET['class_filter']) && !empty($_GET['class_filter'])) {
+    $classFilter = $_GET['class_filter'];
+}
+
+// Handle print request
+if (isset($_GET['action']) && $_GET['action'] == 'print') {
+    $printClass = isset($_GET['print_class']) ? $_GET['print_class'] : '';
+    
+    // Build query based on whether we're filtering by class
+    if (!empty($printClass)) {
+        $sql = "SELECT s.*, c.title as classroom_title 
+                FROM student s 
+                JOIN classroom c ON s.classroom = c.hno 
+                WHERE s.classroom = '$printClass' 
+                ORDER BY s.fname, s.lname";
+        $classTitle = "Class: " . $printClass;
+    } else {
+        $sql = "SELECT s.*, c.title as classroom_title 
+                FROM student s 
+                JOIN classroom c ON s.classroom = c.hno 
+                ORDER BY s.classroom, s.fname, s.lname";
+        $classTitle = "All Classes";
+    }
+    
+    $result = $conn->query($sql);
+    
+    // Output HTML content for printing
+    ?>
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Student List - <?php echo $classTitle; ?></title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 20px;
+                background-color: #fff;
+            }
+            .header {
+                text-align: center;
+                margin-bottom: 30px;
+            }
+            .report-title {
+                font-size: 24px;
+                font-weight: bold;
+                margin-bottom: 10px;
+            }
+            .class-name {
+                font-size: 18px;
+                margin-bottom: 20px;
+            }
+            .student-table {
+                border-collapse: collapse;
+                width: 100%;
+                margin-bottom: 20px;
+            }
+            .student-table th, .student-table td {
+                border: 1px solid #000;
+                padding: 8px;
+                text-align: left;
+            }
+            .student-table th {
+                background-color: #f2f2f2;
+                font-weight: bold;
+            }
+            .footer {
+                text-align: center;
+                margin-top: 30px;
+                font-size: 12px;
+            }
+            .print-button {
+                text-align: center;
+                margin: 20px 0;
+            }
+            @media print {
+                .print-button {
+                    display: none;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="header">
+            <div class="report-title">Student Management System</div>
+            <div class="class-name"><?php echo $classTitle; ?></div>
+            <div>Generated on <?php echo date('F j, Y'); ?></div>
+        </div>
+        
+        <table class="student-table">
+            <thead>
+                <tr>
+                    <th>Student ID</th>
+                    <th>Name</th>
+                    <th>Date of Birth</th>
+                    <th>Gender</th>
+                    <th>Email</th>
+                    <th>Address</th>
+                    <th>Class</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php if ($result->num_rows > 0): ?>
+                    <?php while($row = $result->fetch_assoc()): ?>
+                        <tr>
+                            <td><?php echo htmlspecialchars($row['sid']); ?></td>
+                            <td><?php echo htmlspecialchars($row['fname'] . ' ' . $row['lname']); ?></td>
+                            <td><?php echo date('M d, Y', strtotime($row['bday'])); ?></td>
+                            <td><?php echo htmlspecialchars($row['gender']); ?></td>
+                            <td><?php echo htmlspecialchars($row['email']); ?></td>
+                            <td><?php echo htmlspecialchars($row['address']); ?></td>
+                            <td><?php echo htmlspecialchars($row['classroom_title']); ?></td>
+                        </tr>
+                    <?php endwhile; ?>
+                <?php else: ?>
+                    <tr>
+                        <td colspan="7" class="text-center">No students found</td>
+                    </tr>
+                <?php endif; ?>
+            </tbody>
+        </table>
+        
+        <div class="footer">
+            Student Management System - Generated on <?php echo date('F j, Y'); ?>
+        </div>
+        
+        <div class="print-button">
+            <button onclick="window.print()">Print</button>
+            <button onclick="window.close()">Close Window</button>
+        </div>
+    </body>
+    </html>
+    <?php
+    exit;
+}
 ?>
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title> Dashboard</title><link rel="icon" href="../img/favicon2.png">
+  <title> Dashboard</title>
+  <link rel="icon" href="../img/favicon2.png">
   <!-- Tell the browser to be responsive to screen width -->
   <?php include_once 'header.php'; ?>
+  <style>
+    .filter-section {
+      background-color: #f8f9fa;
+      padding: 15px;
+      border-radius: 5px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .filter-form {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    .filter-form label {
+      font-weight: bold;
+    }
+    .print-btn {
+      background-color: #337ab7;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .print-btn:hover {
+      background-color: #286090;
+    }
+    .delete-btn {
+      background-color: #d9534f;
+      color: white;
+      border: none;
+      padding: 4px 8px;
+      border-radius: 3px;
+      font-size: 12px;
+      cursor: pointer;
+      margin-left: 5px;
+    }
+    .delete-btn:hover {
+      background-color: #c9302c;
+    }
+    .action-buttons {
+      display: flex;
+      gap: 5px;
+    }
+    .alert-container {
+      margin-bottom: 20px;
+    }
+  </style>
 </head>
 
 <body class="nav-md">
@@ -136,6 +344,16 @@ if (isset($_POST['submit'])) {
                 <div class="clearfix"></div>
               </div>
               <div class="x_content">
+                <!-- Alert Messages -->
+                <div class="alert-container">
+                  <?php if (isset($_GET['deleted'])): ?>
+                    <div class="alert alert-success alert-dismissible">
+                      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                      <h4><i class="icon fa fa-check"></i> Success!</h4> Student deleted successfully.
+                    </div>
+                  <?php endif; ?>
+                </div>
+                
                 <!-- Success Message -->
                 <div class="alert alert-success alert-dismissible" style="display: none;" id="successmsg">
                   <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
@@ -253,6 +471,30 @@ if (isset($_POST['submit'])) {
                 <div class="clearfix"></div>
               </div>
               <div class="x_content">
+                <!-- Class Filter Section -->
+                <div class="filter-section">
+                  <form method="get" action="" class="filter-form">
+                    <label for="class_filter">Filter by Class:</label>
+                    <select name="class_filter" class="form-control" style="width: 200px;" onchange="this.form.submit()">
+                      <option value="">All Classes</option>
+                      <?php
+                      $sql = "SELECT * FROM classroom";
+                      $result = $conn->query($sql);
+                      if ($result->num_rows > 0) {
+                        while($row = $result->fetch_assoc()) {
+                          $selected = ($classFilter == $row["hno"]) ? 'selected' : '';
+                          echo "<option value='".$row["hno"]."' $selected>".$row["title"]."</option>";
+                        }
+                      }
+                      ?>
+                    </select>
+                  </form>
+                  
+                  <button type="button" class="print-btn" onclick="window.open('student.php?action=print<?php echo !empty($classFilter) ? '&print_class=' . $classFilter : ''; ?>', '_blank')">
+                    <i class="fa fa-print"></i> Print
+                  </button>
+                </div>
+                
                 <div class="row">
                   <div class="col-sm-12">
                     <div class="card-box table-responsive">
@@ -274,24 +516,41 @@ if (isset($_POST['submit'])) {
                         </thead>
                         <tbody>
                           <?php
-                          $sql = "SELECT * FROM student";
+                          // Build query based on whether we're filtering by class
+                          if (!empty($classFilter)) {
+                              $sql = "SELECT s.*, c.title as classroom_title 
+                                      FROM student s 
+                                      JOIN classroom c ON s.classroom = c.hno 
+                                      WHERE s.classroom = '$classFilter' 
+                                      ORDER BY s.fname, s.lname";
+                          } else {
+                              $sql = "SELECT s.*, c.title as classroom_title 
+                                      FROM student s 
+                                      JOIN classroom c ON s.classroom = c.hno 
+                                      ORDER BY s.classroom, s.fname, s.lname";
+                          }
+                          
                           $result = $conn->query($sql);
 
                           if ($result->num_rows > 0) {
                             while($row = $result->fetch_assoc()) {
-                              $class = (isset($_GET['update']) && $_GET['update'] == $row["sid"]) ? 'parent' : '';
-                              echo "<tr class='{$class}'>
+                              echo "<tr>
                                 <td>" . $row["sid"] . "</td>
                                 <td>" . $row["fname"] . " " . $row["lname"] . "</td>
-                                <td>" . $row["bday"] . "</td>
+                                <td>" . date('M d, Y', strtotime($row["bday"])) . "</td>
                                 <td>" . $row["gender"] . "</td>
                                 <td>" . $row["email"] . "</td>
                                 <td>" . $row["address"] . "</td>
-                                <td>" . $row["classroom"] . "</td>
+                                <td>" . $row["classroom_title"] . "</td>
                                 <td>
-                                  <a href='student.php?update=" . $row["sid"] . "'>
-                                    <small class='btn btn-sm btn-primary'>Update</small>
-                                  </a>
+                                  <div class='action-buttons'>
+                                    <a href='student.php?update=" . $row["sid"] . "'>
+                                      <small class='btn btn-sm btn-primary'>Update</small>
+                                    </a>
+                                    <button class='delete-btn' onclick='confirmDelete(\"" . $row["sid"] . "\")'>
+                                      <i class='fa fa-trash'></i> Delete
+                                    </button>
+                                  </div>
                                 </td>
                               </tr>";
                             }
@@ -322,5 +581,13 @@ if (isset($_POST['submit'])) {
     </div>
   </div>
   <?php include_once 'footer.php'; ?>
+  
+  <script>
+    function confirmDelete(studentId) {
+      if (confirm("Are you sure you want to delete this student? This action cannot be undone.")) {
+        window.location.href = "student.php?delete=" + studentId;
+      }
+    }
+  </script>
 </body>
 </html>

@@ -181,7 +181,8 @@ if(isset($_GET['update'])){
                   if ($result->num_rows > 0) {
                    // output data of each row
                    while($row = $result->fetch_assoc()) {
-                    echo "<option value='".$row["tid"]."' >".$row["fname"]." ".$row["lname"]."_ID:".$row["tid"]."</option>";
+                    echo "<option value='".$row["fname"]." ".$row["lname"]."'>".$row["fname"]." ".$row["lname"]."</option>";
+
                   }
                 }
                 ?>
@@ -288,9 +289,9 @@ if(isset($_GET['update'])){
               <thead>
                 <tr>
                  <th>Class Room ID</th>
-                 <th>Title</th>
-                 <th>Location</th>
-                 <th>Capacity</th>
+                 <th>sub_id</th>
+                 <th>teacher</th>
+                 <th>classroom</th>
                  <th>day</th>
                  <th>start time</th>
                  <th>end time</th>

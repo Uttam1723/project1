@@ -30,8 +30,8 @@
                   <ul class="nav child_menu">
 
                    <?php if($_SESSION['role']=='Teacher'){ ?>
-                <li id="new"><a href="./student.php"><i class="fa fa-users"></i> <span>Student</span> </a></li>
-                <li id="parent"><a href="./parent.php"><i class="fa  fa-female"></i> <span>Parents</span> </a></li>
+
+                
                 <li id="subject"><a href="./subject.php"><i class="fa fa-book"></i> <span>Subject</span> </a></li>
                 <li id="class"><a href="./class.php"><i class="fa fa-bank"></i> <span>Class Room</span> </a></li>
                 <li id="attendance"><a href="./attendance1.php"><i class="fa  fa-check"></i> <span>Attendance</span> </a></li>
@@ -57,7 +57,10 @@
 
             <?php } elseif ($_SESSION['role']=='Admin') { ?>
                 <li id="dashboard-admin"><a href="./teacher.php"><i class="fa fa-dashboard"></i> <span>Add teacher</span></a></li>
+                <li id="parent"><a href="./parent.php"><i class="fa  fa-female"></i> <span>Add Parents</span> </a></li>
+                <li id="new"><a href="./student.php"><i class="fa fa-users"></i> <span>Add Student</span> </a></li>
                 <li id="user"><a href="./user.php"><i class="fa fa-user-plus"></i> <span>Users</span> </a></li>
+            
             <?php } ?>
 
 
