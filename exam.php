@@ -5,10 +5,22 @@ if (!isset($_SESSION['user'])||$_SESSION['role']!='Teacher') {
   # code...
   header('Location:./logout.php');
 }
+
+// Get the logged-in teacher's information
+ $teacher_id = $_SESSION['user'];
+ $teacher_query = "SELECT * FROM teacher WHERE tid = '$teacher_id'";
+ $teacher_result = $conn->query($teacher_query);
+ $teacher_name = "";
+
+if ($teacher_result->num_rows > 0) {
+  $teacher_row = $teacher_result->fetch_assoc();
+  $teacher_name = $teacher_row['fname'] . " " . $teacher_row['lname'];
+}
 ?>
+
 <?php
 
-$id =$fname =$lname = $classroom = $dob = $gender = $address = $parent=" ";
+ $id =$fname =$lname = $classroom = $dob = $gender = $address = $parent=" ";
 
 if(isset($_GET['update'])){
   $update = "SELECT * FROM exam WHERE id='".$_GET['update']."'";
@@ -77,7 +89,8 @@ if(isset($_GET['update'])){
                 <?php if (!isset($_GET['update'])) {
                   if (isset($_POST['submit'])) {
                     $subject = $_POST['subject'];
-                    $teacher = $_POST['teacher'];
+                    // Use the logged-in teacher's ID instead of the form value
+                    $teacher = $teacher_id;
                     $classroom = $_POST['classroom'];
 
                     $date = date_format(new DateTime($_POST['date']),'Y-m-d');
@@ -187,134 +200,125 @@ if(isset($_GET['update'])){
 
             <div class="form-group">
               <label>Teacher in Charge </label>
-              <select class="form-control select2 select2-hidden-accessible" style="width: 100%;" tabindex="-1" aria-hidden="true" name="teacher"><option >Select Teacher</option>
-                <?php
-                $sql = "SELECT * FROM teacher";
-                $result = $conn->query($sql);
-                if ($result->num_rows > 0) {
-                   // output data of each row
-                 while($row = $result->fetch_assoc()) {
-                  echo "<option value='".$row["tid"]."' >".$row["fname"]." ".$row["lname"]."_ID:".$row["tid"]."</option>";
-                }
-              }
-              ?>
-            </select>
-          </div>
-
-          <div class="form-group">
-
-            <label>Date</label>
-
-            <div class="input-group date">
-              <div class="input-group-addon">
-                <i class="fa fa-calendar"></i>
-              </div>
-              <input type="text" name='date' class="form-control pull-right" id="datepicker" placeholder="Select Examm date">
+              <!-- Replace the dropdown with a readonly input field showing the logged-in teacher -->
+              <input type="text" class="form-control" value="<?php echo $teacher_name; ?> (ID: <?php echo $teacher_id; ?>)" readonly>
+              <input type="hidden" name="teacher" value="<?php echo $teacher_id; ?>">
             </div>
-            <!-- /.input group -->
 
-          </div>
-
-          <div class="bootstrap-timepicker">
             <div class="form-group">
-              <label>Start Time:</label>
 
-              <div class="input-group">
-                <input name="stime" type="text" class="form-control timepicker">
+              <label>Date</label>
 
+              <div class="input-group date">
                 <div class="input-group-addon">
-                  <i class="fa fa-clock-o"></i>
+                  <i class="fa fa-calendar"></i>
                 </div>
+                <input type="text" name='date' class="form-control pull-right" id="datepicker" placeholder="Select Examm date">
               </div>
               <!-- /.input group -->
+
             </div>
-            <!-- /.form group -->
-          </div>
-          <div class="bootstrap-timepicker">
-            <div class="form-group">
-              <label>End Time:</label>
 
-              <div class="input-group">
-                <input name="etime" type="text" class="form-control timepicker">
+            <div class="bootstrap-timepicker">
+              <div class="form-group">
+                <label>Start Time:</label>
 
-                <div class="input-group-addon">
-                  <i class="fa fa-clock-o"></i>
+                <div class="input-group">
+                  <input name="stime" type="text" class="form-control timepicker">
+
+                  <div class="input-group-addon">
+                    <i class="fa fa-clock-o"></i>
+                  </div>
                 </div>
+                <!-- /.input group -->
               </div>
-              <!-- /.input group -->
+              <!-- /.form group -->
             </div>
-            <!-- /.form group -->
+            <div class="bootstrap-timepicker">
+              <div class="form-group">
+                <label>End Time:</label>
+
+                <div class="input-group">
+                  <input name="etime" type="text" class="form-control timepicker">
+
+                  <div class="input-group-addon">
+                    <i class="fa fa-clock-o"></i>
+                  </div>
+                </div>
+                <!-- /.input group -->
+              </div>
+              <!-- /.form group -->
+            </div>
+
           </div>
+          <!-- /.box-body -->
 
-        </div>
-        <!-- /.box-body -->
+          <div class="box-footer">
+            <button type="submit" name="submit" value="submit" class="btn btn-primary">Add Exam</button>
+          </div>
+        </form>
 
-        <div class="box-footer">
-          <button type="submit" name="submit" value="submit" class="btn btn-primary">Add Exam</button>
-        </div>
-      </form>
-
+      </div>
     </div>
+
   </div>
 
-</div>
+  <div class="col-md-9">
 
-<div class="col-md-9">
-
-  <div class="x_panel">
-    <div class="x_title">
-      <h2>All <small>Exams</small></h2>
-      <ul class="nav navbar-right panel_toolbox">
-        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-        </li>
+    <div class="x_panel">
+      <div class="x_title">
+        <h2>All <small>Exams</small></h2>
+        <ul class="nav navbar-right panel_toolbox">
+          <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+          </li>
     
-        <li><a class="close-link"><i class="fa fa-close"></i></a>
-        </li>
-      </ul>
-      <div class="clearfix"></div>
-    </div>
-    <div class="x_content">
-      <div class="row">
-        <div class="col-sm-12">
-          <div class="card-box table-responsive">
-            <p class="text-muted font-13 m-b-30">
-              Student Management System
-            </p>
-            <table id="datatable-buttons" class="table table-striped table-bordered" style="width:100%">
-              <thead>
-                <tr>
-                  <th>Exam ID</th>
-                  <th>Subject</th>
-                  <th>Teacher In Charge</th>
-                  <th>Location (Classroom)</th>
-                  <th>Date</th>
-                  <th>Start Time</th>
-                  <th>End Time</th>
+          <li><a class="close-link"><i class="fa fa-close"></i></a>
+          </li>
+        </ul>
+        <div class="clearfix"></div>
+      </div>
+      <div class="x_content">
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="card-box table-responsive">
+              <p class="text-muted font-13 m-b-30">
+                Student Management System
+              </p>
+              <table id="datatable-buttons" class="table table-striped table-bordered" style="width:100%">
+                <thead>
+                  <tr>
+                    <th>Exam ID</th>
+                    <th>Subject</th>
+                    <th>Teacher In Charge</th>
+                    <th>Location (Classroom)</th>
+                    <th>Date</th>
+                    <th>Start Time</th>
+                    <th>End Time</th>
 
-                </tr>
-              </thead>
+                  </tr>
+                </thead>
 
-              <tbody>
-               <?php
+                <tbody>
+                 <?php
 
-               $sql = "SELECT * FROM Exam";
-               $result = $conn->query($sql);
+                 $sql = "SELECT * FROM Exam";
+                 $result = $conn->query($sql);
 
-               if ($result->num_rows > 0) {
-                   // output data of each row
-                 while($row = $result->fetch_assoc()) {
-                  echo "<tr><td> " . $row["id"]. " </td><td> " . $row["subject"]." </td><td> " . $row["teacher"]." </td><td> " . $row["classroom"]. "</td><td>" . $row["date"]. "</td><td>" . $row["stime"]. "</td><td>" . $row["etime"]. "</td></tr>";
+                 if ($result->num_rows > 0) {
+                     // output data of each row
+                   while($row = $result->fetch_assoc()) {
+                    echo "<tr><td> " . $row["id"]. " </td><td> " . $row["subject"]." </td><td> " . $row["teacher"]." </td><td> " . $row["classroom"]. "</td><td>" . $row["date"]. "</td><td>" . $row["stime"]. "</td><td>" . $row["etime"]. "</td></tr>";
+                  }
                 }
-              }
 
-              ?>
-            </tbody>
-          </table>
+                ?>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 </div>
 
 </div>

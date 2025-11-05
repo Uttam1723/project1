@@ -15,7 +15,7 @@ if (isset($_GET['delete'])) {
 ?>
 <?php
 
-$sid =$fname =$lname = $user = $dob = $gender = $address = $parent=" ";
+ $sid =$fname =$lname = $user = $dob = $gender = $address = $parent=" ";
 
 
 if(isset($_GET['update'])){
@@ -210,7 +210,7 @@ if(isset($_GET['update'])){
 
                       <th>Notice</th>
 
-                      <th>Date and Time</th><th>Action</th>
+                      <th>Date and Time</th>
                     </tr>
                   </thead>
 
@@ -224,9 +224,7 @@ if(isset($_GET['update'])){
                     if ($result->num_rows > 0) {
                    // output data of each row
                      while($row = $result->fetch_assoc()) {
-                      echo "<tr><td> " . $row["id"]. " </td><td> " . $row["notice"]." </td><td> " . $row["date"]." </td>
-                      <td><a href='notice.php?delete=". $row["id"]."' class='btn btn-sm btn-danger  delete-notice'><small class='label  bg-red'>Delete</small></a>
-                      </td></tr>";
+                      echo "<tr><td> " . $row["id"]. " </td><td> " . $row["notice"]." </td><td> " . $row["date"]."</td></tr>";
                     }
                   }
 
@@ -265,10 +263,6 @@ if(isset($_GET['update'])){
 <script type="text/javascript">
   $('#myDatepicker3, #myDatepicker4').datetimepicker({
     format: 'hh:mm A'
-  });
-
-  $('a.delete-notice').click(function(){
-    return confirm("Are you sure you want to delete?");
   });
 </script>
 

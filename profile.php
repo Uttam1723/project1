@@ -244,7 +244,7 @@ if($_SESSION['role']=='Student'){
                              <div class="col-md-12">
                               <div class="form-group">
                                 <label for="exampleInputPassword1">Student ID</label>
-                                <input name="sid" type="text" class="form-control" id="exampleInputPassword1"  required value=<?php echo "'".$sid."'"; ?>>
+                                <input name="sid" type="text" class="form-control" id="exampleInputPassword1" disabled required value=<?php echo "'".$sid."'"; ?>>
                               </div>
                             </div>
 
@@ -254,7 +254,7 @@ if($_SESSION['role']=='Student'){
                                 <label>Date of Birth</label>
 
                                 <div class="input-group date">
-                                  <input type="date" name='dob' class="form-control pull-right" id="datepicker" placeholder="Select Student's Data of Birth" value=<?php echo "'".$dob."'"; ?>>
+                                  <input type="date" name='dob' class="form-control pull-right" id="datepicker" placeholder="Select Student's Data of Birth" disabled value=<?php echo "'".$dob."'"; ?>>
                                 </div>
                                 <!-- /.input group -->
 
@@ -293,7 +293,7 @@ if($_SESSION['role']=='Student'){
                             <div class="col-md-12">
                               <div class="form-group">
                                 <label>Class Room</label>
-                                <select class="form-control select2 select2-hidden-accessible" style="width: 100%;" tabindex="-1" aria-hidden="true" name="classroom"><option >Select Class Room</option>
+                                <select class="form-control select2 select2-hidden-accessible" style="width: 100%;" tabindex="-1" aria-hidden="true" name="classroom" disabled><option >Select Class Room</option>
                                   <?php
                                   $sql = "SELECT * FROM classroom";
                                   $result = $conn->query($sql);
@@ -313,7 +313,7 @@ if($_SESSION['role']=='Student'){
                             <div class="form-group">
 
                               <label>Parent</label>
-                              <select name="parent" class="form-control select2 select2-hidden-accessible" style="width: 100%;" tabindex="-1" aria-hidden="true" >
+                              <select name="parent" class="form-control select2 select2-hidden-accessible" style="width: 100%;" tabindex="-1" aria-hidden="true" disabled>
                                <option value="0">Select Parent</option>
 
                                <?php
@@ -429,7 +429,7 @@ if($_SESSION['role']=='Student'){
                         <div class="col-md-12">
                           <div class="form-group">
                             <label for="exampleInputPassword1">Email</label>
-                            <input name="email" type="email" class="form-control" id="exampleInputPassword1"  required value=<?php echo "'".$email."'"; ?>>
+                            <input name="email" type="email" class="form-control" id="exampleInputPassword1" disabled required value=<?php echo "'".$email."'"; ?>>
                           </div>
                         </div>
 
